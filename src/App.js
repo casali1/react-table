@@ -1,43 +1,45 @@
-import './App.css';
 import React from 'react';
-import fakeData from './MOCK_DATA.json';
-import { useTable } from 'react-table';
+    import { useReactTable, getCoreRowModel } from '@tanstack/react-table';
+    import { COLUMNS } from './columns'; // Assuming columns.js is in the same directory
+    import { DATA } from './data'; // Assuming data.js is in the same directory
 
-function App() {
+    function MyTable() {
+      const table = useReactTable({
+        data: DATA,
+        columns: COLUMNS,
+        getCoreRowModel: getCoreRowModel(),
+      });
 
-  const data = React.useMemo(() => fakeData, []);
-  const columns = React.useMemo(() => [
-    
-  {
-    Header: 'ID',
-    accessor: 'id', // accessor is the "key" in the data
-  }, {
-    Header: 'First Name',
-    accessor: 'first_name',
-  }, {
-    Header: 'Last Name',
-    accessor: 'last_name',
-  }, {
-    Header: 'Email',
-    accessor: 'email',
-  }]);
+      return (
+        <table>
+          <thead>
+            {table.getHeaderGroups().map(headerGroup => (
+              <tr key={headerGroup.id}>
+                {headerGroup.headers.map(header => (
+                  <th key={header.id}>
+                    {header.isPlaceholder ? null : (
+                      <>
+                        {header.column.columnDef.header}
+                      </>
+                    )}
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </thead>
+          <tbody>
+            {table.getRowModel().rows.map(row => (
+              <tr key={row.id}>
+                {row.getVisibleCells().map(cell => (
+                  <td key={cell.id}>
+                    {cell.getValue()}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      );
+    }
 
-  const {getTableProps, getTableBodyProps, headerGroups, rows, prepareRow} = useTable({ columns, data });
-
-  return (
-    <div className="App">
-        <div className="table-container">
-            <table>
-              <thead>
-
-              </thead>
-              <tbody>
-                
-              </tbody>
-            </table>
-        </div>
-    </div>
-  );
-}
-
-export default App;
+    export default MyTable;
