@@ -7,7 +7,7 @@ import { createColumnHelper  } from '@tanstack/react-table';
         header: 'ID',
       }),
       columnHelper.accessor('name', {
-        header: 'Name',
+        header: 'NameXXX',
       }),
       columnHelper.accessor('age', {
         header: 'Age',
